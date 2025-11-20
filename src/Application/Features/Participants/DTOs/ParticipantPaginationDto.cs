@@ -33,8 +33,10 @@ public class ParticipantPaginationDto
     [Description("Risk Due")]
     public DateTime? RiskDue { get; set; }
 
-    [Description] 
+    [Description]
     public RiskDueReason RiskDueReason { get; set; } = RiskDueReason.Unknown;
+    
+    public List<string> Tags { get; set; } = new();
 
     private class Mapper : Profile
     {
@@ -50,7 +52,8 @@ public class ParticipantPaginationDto
                 .ForMember(target => target.Owner, options => options.MapFrom(source => source.Owner!.DisplayName))
                 .ForMember(target => target.Tenant, options => options.MapFrom(source => source.Owner!.TenantName))
                 .ForMember(target => target.RiskDue, options => options.MapFrom(source => source.RiskDue))
-                .ForMember(target => target.RiskDueReason, options => options.MapFrom(source => source.RiskDueReason));
+                .ForMember(target => target.RiskDueReason, options => options.MapFrom(source => source.RiskDueReason))
+                .ForMember(target => target.Tags, options => options.MapFrom(source => source.Tags.Select(t => t.Value).ToList()));
             
         }
     }

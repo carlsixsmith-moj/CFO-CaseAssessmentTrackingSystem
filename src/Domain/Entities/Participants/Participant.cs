@@ -16,6 +16,8 @@ public class Participant : OwnerPropertyEntity<string>
     private List<Note> _notes = new();
     private List<ExternalIdentifier> _externalIdentifiers = new();
 
+    private List<Tag> _tags = new();
+
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     private Participant()
     {
@@ -121,6 +123,8 @@ public class Participant : OwnerPropertyEntity<string>
 
     public IReadOnlyCollection<Note> Notes => _notes.AsReadOnly();
 
+    public IReadOnlyCollection<Tag> Tags => _tags.AsReadOnly();
+
     public IReadOnlyCollection<ExternalIdentifier> ExternalIdentifiers => _externalIdentifiers.AsReadOnly();
 
     /// <summary>
@@ -222,20 +226,40 @@ public class Participant : OwnerPropertyEntity<string>
 
     public Participant AddOrUpdateExternalIdentifier(ExternalIdentifier newIdentifier)
     {
-        if(_externalIdentifiers.Contains(newIdentifier))
+        if (_externalIdentifiers.Contains(newIdentifier))
         {
             return this;
         }
 
         var identifier = _externalIdentifiers.Find(x => x.Type == newIdentifier.Type);
 
-        if(identifier is { Type.IsExclusive: true } )
+        if (identifier is { Type.IsExclusive: true })
         {
             AddDomainEvent(new ParticipantIdentifierChangedDomainEvent(this, identifier, newIdentifier));
             _externalIdentifiers.Remove(identifier);
         }
 
         _externalIdentifiers.Add(newIdentifier);
+
+        return this;
+    }
+
+    public Participant AddTag(Tag tag)
+    {
+        if (_tags.Contains(tag) is false)
+        {
+            _tags.Add(tag);
+        }
+
+        return this;
+    }
+    
+    public Participant RemoveTag(Tag tag)
+    {
+        if (_tags.Contains(tag))
+        {
+            _tags.Remove(tag);
+        }
 
         return this;
     }

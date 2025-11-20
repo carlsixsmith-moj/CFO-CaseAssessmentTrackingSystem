@@ -1,4 +1,4 @@
-@page "/pages/participants"
+@* @page "/pages/participants" *@
 
 @using Cfo.Cats.Application.Features.Locations.DTOs
 @using Cfo.Cats.Domain.Common.Enums
@@ -134,6 +134,14 @@
                                 <MudStack>
                                     <MudText Typo="Typo.body2">@context.Item.ParticipantName</MudText>
                                     <MudText Typo="Typo.body2">@context.Item.Id</MudText>
+
+                                    @foreach(var t in context.Item.Tags)
+                                    {
+                                        <MudChip Size="Size.Small" Color="Color.Secondary" Class="me-1">
+                                            @t
+                                        </MudChip>
+                                    }
+
                                 </MudStack>
                             </CellTemplate>
                         </PropertyColumn>

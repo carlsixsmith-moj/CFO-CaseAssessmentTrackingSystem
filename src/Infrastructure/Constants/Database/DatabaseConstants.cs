@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.SignalR.Protocol;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Cfo.Cats.Infrastructure.Constants.Database;
@@ -78,6 +79,7 @@ internal static class DatabaseConstants
         public const string ActivityEscalationQueue = nameof(ActivityEscalationQueue);
 
         public const string PRI = nameof(PRI);
+        public const string Tag = nameof(Tag);
     }
     public static class Schemas
     {
@@ -92,6 +94,7 @@ internal static class DatabaseConstants
         public const string Activities = nameof(Activities);
         public const string Mi = nameof(Mi);
         public const string PRI = nameof(PRI);
+
     }
 
     public static class FieldLengths
@@ -150,6 +153,11 @@ internal static class DatabaseConstants
         /// The maximum length for a contract id.
         /// </summary>
         public const int ContractId = 12;
+    
+        /// <summary>
+        /// The maximum length for a tag value.
+        /// </summary>
+        public const int TagValue = 50;
 
     }
 

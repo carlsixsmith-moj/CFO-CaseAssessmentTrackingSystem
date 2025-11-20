@@ -188,7 +188,7 @@ public class ParticipantEntityTypeConfiguration : IEntityTypeConfiguration<Parti
         {
             note.WithOwner();
             note.ToTable(
-                DatabaseConstants.Tables.Note, 
+                DatabaseConstants.Tables.Note,
                 DatabaseConstants.Schemas.Participant
             );
             note.HasKey("Id");
@@ -204,16 +204,30 @@ public class ParticipantEntityTypeConfiguration : IEntityTypeConfiguration<Parti
             note.HasOne(n => n.CreatedByUser)
                 .WithMany()
                 .HasForeignKey(x => x.CreatedBy);
-            
+
             note.Property(n => n.CreatedBy)
                 .HasMaxLength(DatabaseConstants.FieldLengths.GuidId);
-            
+
             note.HasOne(n => n.LastModifiedByUser)
                 .WithMany()
                 .HasForeignKey(x => x.LastModifiedBy);
-            
+
             note.Property(n => n.LastModifiedBy)
-                .HasMaxLength(DatabaseConstants.FieldLengths.GuidId);            
+                .HasMaxLength(DatabaseConstants.FieldLengths.GuidId);
+        });
+        
+        builder.OwnsMany(p => p.Tags, tag =>
+        {
+            tag.WithOwner();
+            tag.ToTable(
+                DatabaseConstants.Tables.Tag,
+                DatabaseConstants.Schemas.Participant
+            );
+            tag.HasKey("Value", "ParticipantId");
+
+            tag.Property(x => x.Value)
+                .IsRequired()
+                .HasMaxLength(DatabaseConstants.FieldLengths.TagValue);
         });
 
         builder.OwnsOne(p => p.Supervisor, supervisor =>

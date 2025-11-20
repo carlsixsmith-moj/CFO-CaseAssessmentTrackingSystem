@@ -51,13 +51,13 @@ public abstract class CatsComponent<TData> : OwningComponentBase<IMediator>
     /// <summary>
     /// Loads data using the query. Can be called to refresh data.
     /// </summary>
-    protected async Task<bool> LoadDataAsync()
+    protected async Task<bool> LoadDataAsync(CancellationToken cancellationToken = default)
     {
         try
         {
             Loading = true;
             var query = CreateQuery();
-            var result = await Service.Send(query);
+            var result = await Service.Send(query, cancellationToken);
 
             if (IsDisposed)
             {
